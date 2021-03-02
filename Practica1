@@ -1,0 +1,258 @@
+#Practica 1 Com 2
+#Juan Carlos Solloy Xicón 201602816
+import numpy as np
+
+hill = {
+'A':0,
+'B':1,
+'C':2,
+'D':3,
+'E':4,
+'F':5,
+'G':6,
+'H':7,
+'I':8,
+'J':9,
+'K':10,
+'L':11,
+'M':12,
+'N':13,
+'Ñ':14,
+'O':15,
+'P':16,
+'Q':17,
+'R':18,
+'S':19,
+'T':20,
+'U':21,
+'V':22,
+'W':23,
+'X':24,
+'Y':25,
+'Z':26
+}
+hill1={
+0:'A',
+1:'B',
+2:'C',
+3:'D',
+4:'E',
+5:'F',
+6:'G',
+7:'H',
+8:'I',
+9:'J',
+10:'K',
+11:'L',
+12:'M',
+13:'N',
+14:'Ñ',
+15:'O',
+16:'P',
+17:'Q',
+18:'R',
+19:'S',
+20:'T',
+21:'U',
+22:'V',
+23:'W',
+24:'X',
+25:'Y',
+26:'Z'
+}
+
+cifrado= {
+'A':0,
+'B':1,
+'C':2,
+'D':3,
+'E':4,
+'F':5,
+'G':6,
+'H':7,
+'I':8,
+'J':9,
+'K':10,
+'L':11,
+'M':12,
+'N':13,
+'Ñ':14,
+'O':15,
+'P':16,
+'Q':17,
+'R':18,
+'S':19,
+'T':20,
+'U':21,
+'V':22,
+'W':23,
+'X':24,
+'Y':25,
+'Z':26
+}
+desci={
+0:'A',
+1:'B',
+2:'C',
+3:'D',
+4:'E',
+5:'F',
+6:'G',
+7:'H',
+8:'I',
+9:'J',
+10:'K',
+11:'L',
+12:'M',
+13:'N',
+14:'Ñ',
+15:'O',
+16:'P',
+17:'Q',
+18:'R',
+19:'S',
+20:'T',
+21:'U',
+22:'V',
+23:'W',
+24:'X',
+25:'Y',
+26:'Z'
+}
+while True:
+	try:
+		print('''
+			1)Cifrado Hill
+			2)Cifrado Cèsar
+			''')
+		opcion=int(input('Seleccione un tipo de cifrado a utilizar '))
+		if opcion==1:
+			print('Cifrado Hill')
+
+			try:
+				palabra= input("Ingrese una palabra u oración a cifrar: ")
+				palabra=palabra.upper()
+				palabra=palabra.replace(" ","")
+				palabra=palabra.replace(".","")
+				palabra=palabra.replace(",","")
+				palabra=palabra.replace(":","")
+				palabra=palabra.replace(";","")
+				palabra=palabra.replace("Á","A")
+				palabra=palabra.replace("É","E")
+				palabra=palabra.replace("Í","I")
+				palabra=palabra.replace("Ó","O")
+				palabra=palabra.replace("Ú","U")
+				l=int(len(palabra))#Largo de la palabra
+
+				###Si la cantidad de letras de la palabra no es multiplo de 3 se le agregan las que faltan para tener arreglos de 3
+				modu=l%3
+				if modu ==2:
+					l= l+1
+					palabra= palabra +"X" 
+				elif modu == 1:
+					l=l+2
+					palabra= palabra +"XX"
+
+				lp=int(l/3) #Aqui se tienen el numero de arreglos de 3  
+				abc=list()#en abs se guardan las letras 
+				cifr=list()# en cifr se guarda los numeros correspondientes a cada letra
+				for i in palabra:
+					abc.append(i)
+					cifr.append(hill[i])
+
+				tres=np.array_split(cifr,lp)#en tres se guarda el arreglo en arreglos de 3 
+				print(abc)#las letras guardadas en un array
+				print(cifr)#la letras cambiadas a su correspondiente numero
+
+				llave=np.array([[1,2,3],[0,4,5],[1,0,6]])#aqui se tiene la llave 
+				tres1=list()
+				prueba=list()
+				cifradohill=list()
+
+				for k in range(0,lp) :
+					tres1=np.vstack(tres) 
+					prueba=np.dot(llave,tres1[k])#producto punto 
+					modulo=[(prueba[0]%27),(prueba[1]%27),(prueba[2]%27)]#Modulo 27
+					cifradohill.append(modulo)
+					#print('salida modulo 27\n',salida)
+
+				print(cifradohill)
+				cifradohill=np.reshape(cifradohill,l)
+				# print(cifradohill)
+
+				desci=list()
+				for i in cifradohill:
+					desci.append(hill1[i])
+				print(desci)
+			except Exception as e:
+				print('error')
+			except KeyError as e:
+				print('error')
+
+		elif opcion==2:
+			print('Cifrado César')
+			try:
+
+				palabra= input("Ingrese una palabra u oración a cifrar: ")
+
+				palabra=palabra.upper()
+				palabra=palabra.replace(" ","")
+				palabra=palabra.replace(".","")
+				palabra=palabra.replace(",","")
+				palabra=palabra.replace(":","")
+				palabra=palabra.replace(";","")
+				palabra=palabra.replace("Á","A")
+				palabra=palabra.replace("É","E")
+				palabra=palabra.replace("Í","I")
+				palabra=palabra.replace("Ó","O")
+				palabra=palabra.replace("Ú","U")
+				l=int(len(palabra))#Largo de la palabra
+				cifr=list()
+				print(palabra)
+
+				for i in palabra:
+					cifr.append(cifrado[i]+3%27)
+
+				print('cifrado',cifr)
+				k=0;
+
+				descifrado=list()
+
+				for k in range(0,l):
+					descifrado.append(cifr[k]-3%27)
+
+
+				print('decrifrado',descifrado)
+				cesar=list()
+				for i in descifrado:
+					cesar.append(desci[i])
+					
+				a=str(cesar)
+				a=a.replace(",","")
+				a=a.replace("'","")
+				a=a.replace(" ","")
+				print(a)
+
+
+			
+			except Exception as e:
+				print('error')
+			except KeyError as e:
+				print('error')
+
+
+		else:
+			print('Seleccione de nuevo por favor')
+
+
+
+
+
+
+
+
+
+	except Exception as e:
+		print('error')
+	except KeyError as e:
+		print('error')
